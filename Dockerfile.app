@@ -1,27 +1,40 @@
+# Base Python image
 FROM python:3.10-slim
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpq-dev \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /app
 
-# Copy requirements and install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# Install system dependencies (only required ones)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    libopenblas-dev \
+    libgl1 \
+    libglib2.0-0 \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN pip install llama-cpp-python
-RUN pip install faiss-cpu
-# Copy application code
+# Upgrade pip + tools
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+
+# Copy requirements
+COPY requirements.txt .
+
+# Install PyTorch CPU version
+RUN pip install --no-cache-dir \
+    torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1
+
+
+
+# Install remaining requirements (make sure torch, torchvision, torchaudio are REMOVED from requirements.txt)
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy all project files
 COPY . .
 
-# Expose Flask port
+# Expose FastAPI/Flask port
 EXPOSE 8070
 
-# Run the Flask app
-CMD ["python", "main_app.py"]
+# Start app with uvicorn (for FastAPI)
+CMD ["python3", "main_app.py"]  

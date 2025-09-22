@@ -1,0 +1,45 @@
+FROM nvidia/cuda:12.4.1-devel-ubuntu22.04
+
+# Install GCC 12 and build deps + compat driver stub for linker
+RUN apt-get update && apt-get install -y \
+    git cmake build-essential curl \
+    gcc-12 g++-12 \
+    libopenblas-dev libsqlite3-dev libssl-dev libcurl4-openssl-dev pkg-config \
+    cuda-compat-12-4 \
+ && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 \
+ && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100 \
+ && rm -rf /var/lib/apt/lists/*
+
+ENV PATH=/usr/local/cuda/bin:${PATH}
+ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/local/cuda/compat:${LD_LIBRARY_PATH}
+
+# Ensure a plain libcuda.so exists (some linkers look for it)
+RUN if [ -f /usr/local/cuda/compat/libcuda.so.1 ] && [ ! -f /usr/local/cuda/compat/libcuda.so ]; then \
+      ln -s /usr/local/cuda/compat/libcuda.so.1 /usr/local/cuda/compat/libcuda.so; \
+    fi
+
+WORKDIR /llama
+
+# Build llama.cpp server for A10 (SM 86); skip examples/tests
+RUN git clone --depth=1 https://github.com/ggerganov/llama.cpp.git . && \
+    mkdir -p build && cd build && \
+    cmake .. \
+        -DGGML_CUDA=on \
+        -DCMAKE_CUDA_ARCHITECTURES=86 \
+        -DLLAMA_BUILD_SERVER=on \
+        -DLLAMA_BUILD_EXAMPLES=off \
+        -DLLAMA_BUILD_TESTS=off && \
+    cmake --build . --config Release -j"$(nproc)" && \
+    # Verify what got built and normalize the name to 'server'
+    ls -lah bin && \
+    if [ -x bin/server ]; then echo "server binary OK"; \
+    elif [ -x bin/llama-server ]; then ln -s llama-server bin/server; \
+    else echo "ERROR: server binary not found" && exit 1; fi
+
+# Expose server port
+EXPOSE 8000
+
+# Use absolute path so entrypoint CWD changes don't break it
+# CMD ["/llama/build/bin/server", "-m", "/models/Phi-3.1-mini-128k-instruct-Q4_K_M.gguf", "--port", "8000", "--n-gpu-layers", "33", "--n-threads", "6", "--n-ctx", "2500", "--mlock"]CMD ["/llama/build/bin/server","-m","/models/Phi-3.1-mini-128k-instruct-Q4_K_M.gguf","--port","8000","-ngl","33","-t","6","-c","2500","--mlock"]
+#CMD ["/llama/build/bin/server","-m","/models/Phi-3.1-mini-128k-instruct-Q4_K_M.gguf","--port","8000","-ngl","6","-c","1024","-b","128","-ub","32"]
+CMD ["/llama/build/bin/server", "-m", "/models/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf", "--port", "8000", "--host", "0.0.0.0", "-c", "1024", "-b", "128", "-ub", "32"]

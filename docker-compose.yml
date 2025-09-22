@@ -1,38 +1,48 @@
 version: "3.9"
 
 services:
-  llama-server:
+  model:
     build:
       context: .
       dockerfile: Dockerfile.model
-    container_name: llama-server
-    volumes:
-      - ./models:/models
+    container_name: model-server
     ports:
       - "8000:8000"
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
+    volumes:
+      - ./models:/models
     environment:
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
-      - LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/lib/x86_64-linux-gnu
-    runtime: nvidia   # Explicitly use NVIDIA runtime
+      - MODEL_PATH=/models/gemma-3-1b-it-Q4_K_M.gguf
 
-  hrms-app:
+  app:
     build:
       context: .
       dockerfile: Dockerfile.app
-    container_name: hrms-app
-    volumes:
-      - .:/app
+    container_name: bot-app
     ports:
-      - "8070:8070"
-    depends_on:
-      - llama-server
+      - "5001:8070"
     environment:
-      - MODEL_ENDPOINT=http://llama-server:8000/completion
+      - MODEL_SERVER=http://model:8000
+      - DB_HOST=db          # <- database hostname
+      - DB_PORT=5432
+      - DB_NAME=mydb
+      - DB_USER=myuser
+      - DB_PASSWORD=mypassword
+    depends_on:
+      - model
+      - db
+
+  db:
+    image: postgres:15
+    container_name: postgres-db
+    restart: always
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

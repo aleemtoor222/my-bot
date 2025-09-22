@@ -1,0 +1,133 @@
+nohup: ignoring input
+/home/aleem/Downloads/my-bot/main_app.py:9: LangChainDeprecationWarning: Importing PyPDFLoader from langchain.document_loaders is deprecated. Please replace deprecated imports:
+
+>> from langchain.document_loaders import PyPDFLoader
+
+with new imports of:
+
+>> from langchain_community.document_loaders import PyPDFLoader
+You can use the langchain cli to **automatically** upgrade many imports. Please see documentation here <https://python.langchain.com/docs/versions/v0_2/>
+  from langchain.document_loaders import PyPDFLoader
+/home/aleem/Downloads/my-bot/main_app.py:11: LangChainDeprecationWarning: Importing FAISS from langchain.vectorstores is deprecated. Please replace deprecated imports:
+
+>> from langchain.vectorstores import FAISS
+
+with new imports of:
+
+>> from langchain_community.vectorstores import FAISS
+You can use the langchain cli to **automatically** upgrade many imports. Please see documentation here <https://python.langchain.com/docs/versions/v0_2/>
+  from langchain.vectorstores import FAISS
+/home/aleem/Downloads/my-bot/main_app.py:12: LangChainDeprecationWarning: Importing HuggingFaceEmbeddings from langchain.embeddings is deprecated. Please replace deprecated imports:
+
+>> from langchain.embeddings import HuggingFaceEmbeddings
+
+with new imports of:
+
+>> from langchain_community.embeddings import HuggingFaceEmbeddings
+You can use the langchain cli to **automatically** upgrade many imports. Please see documentation here <https://python.langchain.com/docs/versions/v0_2/>
+  from langchain.embeddings import HuggingFaceEmbeddings
+/home/aleem/Downloads/my-bot/main_app.py:14: LangChainDeprecationWarning: Importing LLMs from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
+
+`from langchain_community.llms import LlamaCpp`.
+
+To install langchain-community run `pip install -U langchain-community`.
+  from langchain.llms import LlamaCpp
+/home/aleem/Downloads/my-bot/main_app.py:14: LangChainDeprecationWarning: Importing LLMs from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
+
+`from langchain_community.llms import LlamaCpp`.
+
+To install langchain-community run `pip install -U langchain-community`.
+  from langchain.llms import LlamaCpp
+/home/aleem/Downloads/my-bot/llmconfig.py:1: LangChainDeprecationWarning: Importing LLMs from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
+
+`from langchain_community.llms import LlamaCpp`.
+
+To install langchain-community run `pip install -U langchain-community`.
+  from langchain.llms import LlamaCpp
+/home/aleem/Downloads/my-bot/llmconfig.py:14: LangChainDeprecationWarning: Importing PyPDFLoader from langchain.document_loaders is deprecated. Please replace deprecated imports:
+
+>> from langchain.document_loaders import PyPDFLoader
+
+with new imports of:
+
+>> from langchain_community.document_loaders import PyPDFLoader
+You can use the langchain cli to **automatically** upgrade many imports. Please see documentation here <https://python.langchain.com/docs/versions/v0_2/>
+  from langchain.document_loaders import PyPDFLoader
+2025-09-22 16:11:17,481 - DEBUG - load_ssl_context verify=True cert=None trust_env=True http2=False
+2025-09-22 16:11:17,482 - DEBUG - load_verify_locations cafile='/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem'
+2025-09-22 16:11:17,813 - DEBUG - load_ssl_context verify=True cert=None trust_env=True http2=False
+2025-09-22 16:11:17,814 - DEBUG - load_verify_locations cafile='/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem'
+2025-09-22 16:11:17,827 - DEBUG - LLM initialized successfully
+2025-09-22 16:13:30,478 - ERROR - Database connection failed: connection to server at "postrgres-hn-dev-uae.postgres.database.azure.com" (4.161.41.55), port 5432 failed: Connection timed out
+	Is the server running on that host and accepting TCP/IP connections?
+
+Traceback (most recent call last):
+  File "/home/aleem/.local/bin/uvicorn", line 8, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/usr/lib/python3.13/site-packages/click/core.py", line 1157, in __call__
+    return self.main(*args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/site-packages/click/core.py", line 1078, in main
+    rv = self.invoke(ctx)
+  File "/usr/lib/python3.13/site-packages/click/core.py", line 1434, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/site-packages/click/core.py", line 783, in invoke
+    return __callback(*args, **kwargs)
+  File "/home/aleem/.local/lib/python3.13/site-packages/uvicorn/main.py", line 415, in main
+    run(
+    ~~~^
+        app,
+        ^^^^
+    ...<45 lines>...
+        h11_max_incomplete_event_size=h11_max_incomplete_event_size,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/aleem/.local/lib/python3.13/site-packages/uvicorn/main.py", line 582, in run
+    server.run()
+    ~~~~~~~~~~^^
+  File "/home/aleem/.local/lib/python3.13/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+  File "/usr/lib64/python3.13/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/usr/lib64/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib64/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/home/aleem/.local/lib/python3.13/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/home/aleem/.local/lib/python3.13/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+    ~~~~~~~~~~~^^
+  File "/home/aleem/.local/lib/python3.13/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/aleem/.local/lib/python3.13/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "/usr/lib64/python3.13/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/home/aleem/Downloads/my-bot/main_app.py", line 38, in <module>
+    from db_utils import conn
+  File "/home/aleem/Downloads/my-bot/db_utils.py", line 21, in <module>
+    conn = psycopg2.connect(
+        dbname=os.getenv("DB_NAME", "hrms_empowhr_dev"),
+    ...<3 lines>...
+        port=os.getenv("DB_PORT", "5432")
+    )
+  File "/home/aleem/.local/lib/python3.13/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+psycopg2.OperationalError: connection to server at "postrgres-hn-dev-uae.postgres.database.azure.com" (4.161.41.55), port 5432 failed: Connection timed out
+	Is the server running on that host and accepting TCP/IP connections?
+
