@@ -6,3 +6,5 @@ policy_faiss_index/
 policy_faiss_index_org_2/
 .env
 firebase_accountkey.json
+.env
+firebase_accountkey.json
