@@ -1,5 +1,5 @@
 # Base Python image
-FROM python:3.10-slim
+FROM python:3.10
 
 # Set working directory
 WORKDIR /app
@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
     git \
     curl \
-    openjdk-17-jdk \  
+    openjdk-17-jdk \
     && rm -rf /var/lib/apt/lists/*
 
 # Upgrade pip + tools
