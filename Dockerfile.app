@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
     git \
     curl \
-    openjdk-17-jdk \
+    openjdk-17-jdk-headless \
     && rm -rf /var/lib/apt/lists/*
 
 # Upgrade pip + tools
